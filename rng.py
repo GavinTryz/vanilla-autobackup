@@ -2,7 +2,7 @@ import random
 import sys
 import time
 import select
-import msvcrt
+
 
 input_buffer = ""
 while True:
@@ -13,15 +13,16 @@ while True:
         print("STDERR: Divisible by 3!", file=sys.stderr)
 
     if sys.platform == "win32":
-            while msvcrt.kbhit():
-                char = msvcrt.getche().decode('utf-8')
-                if char == '\r':
-                    char = '\n'
-                if char == '\n':
-                    print("STDIN :", input_buffer)
-                    input_buffer = ''
-                else:
-                    input_buffer += char
+        import msvcrt
+        while msvcrt.kbhit():
+            char = msvcrt.getche().decode('utf-8')
+            if char == '\r':
+                char = '\n'
+            if char == '\n':
+                print("STDIN :", input_buffer)
+                input_buffer = ''
+            else:
+                input_buffer += char
     else:
         if select.select([sys.stdin], [], [], 1)[0]:
             user_input = sys.stdin.readline().strip()
